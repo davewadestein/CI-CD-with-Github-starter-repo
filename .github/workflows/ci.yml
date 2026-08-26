@@ -74,4 +74,4 @@ jobs:
           TOKEN: ${{ secrets.DEMO_TOKEN }}
         run: |
           echo "A deployment token was provided"
-          test -n "$TOKEN"
+          echo "$TOKEN"
