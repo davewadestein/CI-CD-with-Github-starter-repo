@@ -60,3 +60,16 @@ jobs:
       - name: Deploy
         run: echo "Deploying application"
 
+      - name: Download build output
+        uses: actions/download-artifact@v7
+        with:
+          name: web-dist
+          path: ./dist
+
+      - name: Inspect build output
+        run: |
+          ls -R dist
+          cat dist/index.html
+
+      - name: Deploy
+        run: echo "Deploying application"
