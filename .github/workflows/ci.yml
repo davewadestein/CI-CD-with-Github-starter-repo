@@ -4,10 +4,20 @@ name: CI
 
 on:
   workflow_dispatch:
+    inputs:
+      environment:
+        description: Deployment environment
+        required: true
+        type: choice
+        options:
+          - staging
+          - production
 
   push:
     branches:
       - main
+    paths:
+      - 'src/**'
 
 permissions:
   contents: read
