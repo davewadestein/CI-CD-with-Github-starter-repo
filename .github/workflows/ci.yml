@@ -56,18 +56,18 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
 
+    env:
+      REGION: ${{ vars.DEPLOY_REGION }}
+
     steps:
-      - name: Inspect files
-        run: ls -R .
-
-      - name: Deploy
-        run: echo "Deploying application"
-
       - name: Download build output
         uses: actions/download-artifact@v7
         with:
           name: web-dist
           path: ./dist
+
+      - name: Show deployment configuration
+        run: echo "Deploying to $REGION"
 
       - name: Inspect build output
         run: |
@@ -76,3 +76,26 @@ jobs:
 
       - name: Deploy
         run: echo "Deploying application"
+      needs: build
+      runs-on: ubuntu-latest
+
+      steps:
+        - name: Inspect files
+          run: ls -R .
+  
+        - name: Deploy
+          run: echo "Deploying application"
+  
+        - name: Download build output
+          uses: actions/download-artifact@v7
+          with:
+            name: web-dist
+            path: ./dist
+  
+        - name: Inspect build output
+          run: |
+            ls -R dist
+            cat dist/index.html
+  
+        - name: Deploy
+          run: echo "Deploying application"
