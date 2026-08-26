@@ -82,8 +82,6 @@ jobs:
       REGION: ${{ vars.DEPLOY_REGION }}
 
     steps:
-      - name: Simulate deployment
-        run: sleep 60
       - name: Download build output
         uses: actions/download-artifact@v7
         with:
