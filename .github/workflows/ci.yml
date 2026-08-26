@@ -95,3 +95,6 @@ jobs:
         run: |
           echo "A deployment token was provided"
           echo "$TOKEN"
+
+      - name: Show selected environment
+        run: echo "Selected environment is ${{ inputs.environment }}"
