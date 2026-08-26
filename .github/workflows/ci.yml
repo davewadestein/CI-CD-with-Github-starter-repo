@@ -41,6 +41,10 @@ jobs:
       - lint
     runs-on: ubuntu-latest
 
+    permissions:
+      contents: read
+      packages: write
+
     steps:
       - uses: actions/checkout@v7
 
@@ -58,6 +62,9 @@ jobs:
   deploy-demo:
     needs: build
     runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
 
     env:
       REGION: ${{ vars.DEPLOY_REGION }}
