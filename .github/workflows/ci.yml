@@ -21,7 +21,11 @@ on:
 
 permissions:
   contents: read
-    
+  
+concurrency:
+  group: deploy-${{ github.ref }}
+  cancel-in-progress: true
+  
 jobs:
   test:
     runs-on: ubuntu-latest
