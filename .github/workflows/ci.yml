@@ -62,10 +62,8 @@ jobs:
     steps:
       - uses: actions/checkout@v7
 
-      - name: Build application
-        run: |
-          mkdir -p dist
-          cp src/index.html dist/index.html
+      - name: Prepare build
+        uses: ./.github/actions/prepare-build
 
       - name: Upload build output
         uses: actions/upload-artifact@v7
