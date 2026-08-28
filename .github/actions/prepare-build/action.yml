@@ -1,0 +1,14 @@
+name: Prepare Build
+description: Prepare the application build
+
+runs:
+  using: composite
+
+  steps:
+    - name: Create output directory
+      shell: bash
+      run: mkdir -p dist
+
+    - name: Copy application
+      shell: bash
+      run: cp src/index.html dist/index.html
