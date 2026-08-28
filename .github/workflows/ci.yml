@@ -74,13 +74,13 @@ jobs:
           path: dist/
           retention-days: 7
 
-  deploy-demo:
+  deploy-staging:
     needs: build
+    environment: staging
+    runs-on: ubuntu-latest
 
     permissions:
       contents: read
-
-    runs-on: ubuntu-latest
 
     env:
       REGION: ${{ vars.DEPLOY_REGION }}
@@ -110,5 +110,8 @@ jobs:
           ls -R dist
           cat dist/index.html
 
-      - name: Deploy
-        run: echo "Deploying application"
+      - name: Deploy to staging
+        run: |
+          echo "Deploying to staging"
+          echo "Region: $REGION"
+          ls -R dist
