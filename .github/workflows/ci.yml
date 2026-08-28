@@ -1,7 +1,15 @@
 name: CI
 
 on:
-  workflow_dispatch: # manual button
+  workflow_dispatch: # add inputs to our manual workflow
+   inputs:
+     environment:
+       description: Deployment environment
+       required: true
+       type: choice
+       options:
+         - staging
+         - production
 
   push:
     branches: # when a change is made to main branch
