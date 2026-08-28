@@ -38,6 +38,17 @@ jobs:
           path: .demo-cache
           key: demo-cache-${{ runner.os }}-${{ hashFiles('src/**') }}
 
+      - name: Simulate expensive setup
+        if: steps.demo-cache.outputs.cache-hit != 'true'
+        run: |
+          echo "Cache miss — doing expensive setup"
+          mkdir -p .demo-cache
+          sleep 5
+          echo "prepared" > .demo-cache/result.txt
+
+      - name: Use cached setup
+        run: cat .demo-cache/result.txt
+  
       - name: Run tests
         run: echo "Tests passed"
 
