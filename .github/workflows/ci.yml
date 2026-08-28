@@ -7,6 +7,9 @@ on:
     branches: # when a change is made to main branch
       - main
 
+    paths: # only changes which affect the src folder should trigger the workflow
+      - 'src/**'
+
 jobs:
   hello: # name of our job
     runs-on: ubuntu-latest
