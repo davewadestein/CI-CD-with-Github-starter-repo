@@ -46,6 +46,12 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Download build output
+        uses: actions/download-artifact@v7
+        with:
+          name: web-dist
+          path: ./dist
+          
       - name: Inspect files
         run: ls -R .
         
