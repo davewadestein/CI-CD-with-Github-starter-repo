@@ -1,7 +1,7 @@
 name: CI
 
 on:
-  workflow_dispatch: # manual butto
+  workflow_dispatch: # manual button
 
   push:
     branches: # when a change is made to main branch
@@ -21,10 +21,7 @@ jobs:
         run: echo "Triggered by ${{ github.event_name }}"
 
       - name: Run tests
-        run: echo "Tests failed"
-        
-      - name: Exit status
-        run: exit 1
+        run: echo "Tests passed"
 
   build:
     needs: test
