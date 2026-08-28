@@ -1,0 +1,103 @@
+name: CI
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: Deployment environment
+        required: true
+        type: choice
+        options:
+          - staging
+          - production
+
+  push:
+    branches:
+      - main
+    paths:
+      - 'src/**'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: deploy-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run tests
+        run: npm test
+
+  build:
+    needs: test
+
+    permissions:
+      contents: read
+      packages: write
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Prepare build
+        uses: ./.github/actions/prepare-build
+
+      - name: Upload build output
+        uses: actions/upload-artifact@v4
+        with:
+          name: web-dist
+          path: dist/
+          retention-days: 7
+
+  deploy-demo:
+    needs: build
+
+    permissions:
+      contents: read
+
+    runs-on: ubuntu-latest
+
+    env:
+      REGION: ${{ vars.DEPLOY_REGION }}
+
+    steps:
+      - name: Download build output
+        uses: actions/download-artifact@v5
+        with:
+          name: web-dist
+          path: ./dist
+
+      - name: Show selected environment
+        run: echo "Selected environment is ${{ inputs.environment }}"
+
+      - name: Show deployment configuration
+        run: echo "Deploying to $REGION"
+
+      - name: Verify deployment token
+        env:
+          TOKEN: ${{ secrets.DEMO_TOKEN }}
+        run: |
+          echo "A deployment token was provided"
+          test -n "$TOKEN"
+
+      - name: Inspect build output
+        run: |
+          ls -R dist
+          cat dist/index.html
+
+      - name: Deploy
+        run: echo "Deploying application"
